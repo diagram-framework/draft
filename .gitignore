@@ -3,5 +3,4 @@
 *.pyc
 *.pth
 *.pyc
-core/transducer/__pycache__/outcome.cpython-312.pyc
-/core/transducer/__pycache__
+__pycache__/
