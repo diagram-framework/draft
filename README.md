@@ -4,6 +4,7 @@ This project proposes the development of a system for analyzing different types 
 The goal is to create a tool capable of analyzing scanned or photographed sketches of diagrams and automatically generating code that can be rendered into the same diagrams digitally, 
 to eventually integrate or modify them.
 
+The weights are available [here](https://drive.google.com/drive/folders/1OiFMgyGBnd7mLpTMaKXvobQ5-njjW7fp?usp=share_link)
 
 ## Get Started
 
