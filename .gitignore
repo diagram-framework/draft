@@ -4,6 +4,10 @@
 *.pth
 *.pyc
 __pycache__/
+doc/icelie/IEEE-conference-template-062824/
+doc/icelie/IEEEtranBST2/
+.claude/
+.code-review-graph/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
