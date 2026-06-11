@@ -5,33 +5,36 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage{url}
 \usepackage[caption=false,font=footnotesize]{subfig}
 
 \graphicspath{{../../article/}}
 
-\title{DRAFT: AI-based Pipeline for Handwritten Diagram Digitalization}
+\title{AI-based Pipeline for Handwritten Diagram Digitalization (DRAFT)}
 
 \author{
     \IEEEauthorblockN{Filippo Garagnani}
     \IEEEauthorblockA{
+        \textit{Dept. of Engineering Enzo Ferrari} \\
         \textit{Univ. of Modena and Reggio Emilia} \\
         Modena, Italy \\
-        0009-0003-3012-6042
+        https://orcid.org/0009-0003-3012-6042
     }
     \and
     \IEEEauthorblockN{Saverio Napolitano}
     \IEEEauthorblockA{
+        \textit{Dept. of Engineering Enzo Ferrari} \\
         \textit{Univ. of Modena and Reggio Emilia} \\
         Modena, Italy \\
-        0009-0001-7847-456X
+        https://orcid.org/0009-0001-7847-456X
     }
     \and
     \IEEEauthorblockN{Nicola Ricciardi}
     \IEEEauthorblockA{
+        \textit{Dept. of Engineering Enzo Ferrari} \\
         \textit{Univ. of Modena and Reggio Emilia} \\
         Modena, Italy \\
-        0009-0006-3311-6669
+        https://orcid.org/0009-0006-3311-6669
     }
 }
 
@@ -221,21 +224,23 @@ TrOCR base handwritten & 1.549 & \textbf{0.057} & \textbf{3003} \\
 
 \begin{figure}[htbp]
     \centering
+    \resizebox{\linewidth}{!}{%
     \begin{tabular}{ccc}
         \includegraphics[height=4.8cm]{ex6.png} &
         \includegraphics[height=4.8cm]{chat1.png} &
         \includegraphics[height=4.15cm]{chat2.png} \\
         (a) Our result & (b) GPT Mermaid & (c) GPT D2 \\
-    \end{tabular}
+    \end{tabular}}
 
     \vspace{0.6em}
 
+    \resizebox{\linewidth}{!}{%
     \begin{tabular}{ccc}
         \includegraphics[height=4.8cm]{ex4.png} &
         \includegraphics[height=4.8cm]{chat3.png} &
         \includegraphics[height=4.8cm]{chat4.png} \\
         (d) Our result & (e) GPT Mermaid & (f) GPT D2 \\
-    \end{tabular}
+    \end{tabular}}
     \caption{Qualitative comparison between DRAFT and zero-shot GPT-4o markup generation.}
     \label{fig:gpt_compare}
 \end{figure}
@@ -282,11 +287,7 @@ Pretrained weights & Public release folder \\
 \end{tabular}
 \end{table}
 
-Currently, the release is best understood as a reproducible software prototype rather than a fully packaged benchmark distribution. In addition to source code, the project now provides access to pretrained model weights through a \href{https://drive.google.com/drive/folders/1OiFMgyGBnd7mLpTMaKXvobQ5-njjW7fp?usp=share_link}{public weights folder} linked from the repository README. This makes it possible to run the end-to-end pipeline without retraining the classifier and detector from scratch.
-
-The released workflow remains at the component level rather than being abstracted behind a single interface. Users are expected to install external tooling, provide suitable input images, and in some cases adjust extraction thresholds to match their diagram style.
-
-The public release also lowers the barrier for follow-up educational experimentation. Instructors and researchers can adapt the workflow to local assignments, substitute alternative OCR or detection models, inspect the intermediate representation, and compare generated outputs without rebuilding the full stack from scratch.
+Currently, the release is best understood as a reproducible software prototype rather than a fully packaged benchmark distribution. In addition to source code, the project provides pretrained model weights through a public weights folder\footnote{\scriptsize\url{https://drive.google.com/drive/folders/1OiFMgyGBnd7mLpTMaKXvobQ5-njjW7fp?usp=share_link}} linked from the repository README, making it possible to run the end-to-end pipeline without retraining from scratch. Users are expected to install external tooling and in some cases adjust extraction thresholds to match their diagram style. Instructors and researchers can adapt the workflow to local assignments, substitute alternative OCR or detection models, and compare generated outputs without rebuilding the full stack from scratch.
 
 \section{Classroom Deployment Considerations}
 The current CLI-based workflow is intentionally human-in-the-loop: a student submits a photographed sketch, receives a first-pass Mermaid or D2 rendering, and corrects errors before final submission. This is a better fit for early adoption than a black-box autograder, since occasional detection or OCR mistakes can be fixed directly in the editable output. The public release of pretrained weights makes local trials feasible without retraining. Future steps include a web interface, classroom-specific dataset collection from corrected outputs, and comparison of generated diagrams against reference structures for formative feedback.
