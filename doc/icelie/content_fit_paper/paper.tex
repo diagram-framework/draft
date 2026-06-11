@@ -10,7 +10,7 @@
 
 \graphicspath{{../../article/}}
 
-\title{D.I.A.G.R.A.M.: An AI-Assisted Tool for Converting Handwritten Engineering Diagrams into Editable Digital Representations}
+\title{DRAFT: AI-based Pipeline for Handwritten Diagram Digitalization}
 
 \author{
     \IEEEauthorblockN{Filippo Garagnani}
@@ -40,7 +40,7 @@
 \maketitle
 
 \begin{abstract}
-In engineering education, handwritten diagrams are widely used to express algorithms, workflows, state machines, and system structures. These artifacts support reasoning during exercises and project work, but they are difficult to edit, archive, reuse, or integrate into digital learning material when they exist only on paper or in static photographs. This paper presents D.I.A.G.R.A.M., a prototype AI-assisted system for converting handwritten engineering diagrams into structured and editable digital representations. The pipeline combines diagram classification, object detection, optical character recognition, and deterministic post-processing to generate markup-based outputs such as Mermaid and D2. The contribution is a modular proof-of-concept tool for supporting documentation, revision, and future feedback workflows in engineering education, demonstrated through component-level metrics and qualitative end-to-end examples.
+In engineering education, handwritten diagrams are widely used to express algorithms, workflows, state machines, and system structures. These artifacts support reasoning during exercises and project work, but they are difficult to edit, archive, reuse, or integrate into digital learning material when they exist only on paper or in static photographs. This paper presents DRAFT (Diagram Recognition and Formatting Tool), a prototype AI-assisted system for converting handwritten engineering diagrams into structured and editable digital representations. The pipeline combines diagram classification, object detection, optical character recognition, and deterministic post-processing to generate markup-based outputs such as Mermaid and D2. The contribution is a modular proof-of-concept tool for supporting documentation, revision, and future feedback workflows in engineering education, demonstrated through component-level metrics and qualitative end-to-end examples.
 \end{abstract}
 
 
@@ -53,7 +53,7 @@ Diagrams are central to engineering education. Students and instructors routinel
 
 Converting handwritten diagrams into editable digital formats can support multiple educational needs. Students can refine and document their work more easily, instructors can archive diagram-based submissions in structured form, and future tools can build on the extracted representation for semi-automatic feedback or assessment. However, this conversion requires several non-trivial steps, including diagram-type recognition, element detection, text digitization, and relation reconstruction.
 
-This paper presents D.I.A.G.R.A.M., a prototype AI-assisted tool for converting handwritten engineering diagrams into structured and editable digital representations through a modular pipeline that combines learned and deterministic components to support diagram-based learning workflows.
+This paper presents DRAFT (Diagram Recognition and Formatting Tool), a prototype AI-assisted tool for converting handwritten engineering diagrams into structured and editable digital representations through a modular pipeline that combines learned and deterministic components to support diagram-based learning workflows.
 
 More specifically, the paper contributes:
 \begin{itemize}
@@ -65,7 +65,7 @@ More specifically, the paper contributes:
 \section{Related Work}
 Research on handwritten diagrams spans document analysis, sketch understanding, and structured diagram generation. Deep-learning approaches have been used to recognize arrow-oriented diagrams, as in Arrow R-CNN \cite{arrowrcnn}, and recent work has explored sketch-to-diagram conversion into vector formats \cite{sketchdiagram}. Earlier interactive systems also addressed hand-drawn UML recognition \cite{interactiveUML}. In parallel, online handwritten-diagram recognition has benefited from stroke order and pen trajectory information \cite{online1,online2,online3,framework}, whereas the present work addresses the more challenging offline setting in which only an image of the final handwritten diagram is available.
 
-From an educational perspective, diagrams are not only visual recognition targets but also learning artifacts. Educational diagrams encode structure, process, and reasoning \cite{ai2d}, and tools for turning sketches into structured forms suggest clear value for engineering and software-related learning activities \cite{interactiveUML,modelsketch}. Recent engineering education research also reflects growing interest in AI-assisted tools for feedback, software engineering learning, and engineering drawing support \cite{isetGenAISE,inquisitiveAI,genAIDrawingsFeedback}. D.I.A.G.R.A.M. is positioned within this space as a prototype educational tool rather than a benchmark-driven computer vision contribution.
+From an educational perspective, diagrams are not only visual recognition targets but also learning artifacts. Educational diagrams encode structure, process, and reasoning \cite{ai2d}, and tools for turning sketches into structured forms suggest clear value for engineering and software-related learning activities \cite{interactiveUML,modelsketch}. Recent engineering education research also reflects growing interest in AI-assisted tools for feedback, software engineering learning, and engineering drawing support \cite{isetGenAISE,inquisitiveAI,genAIDrawingsFeedback}. DRAFT is positioned within this space as a prototype educational tool rather than a benchmark-driven computer vision contribution.
 
 \section{System Architecture}
 Figure~\ref{fig:pipeline} shows the overall architecture. The pipeline is composed of four main modules: Classifier, Extractor, Transducer, and Compiler.
@@ -73,7 +73,7 @@ Figure~\ref{fig:pipeline} shows the overall architecture. The pipeline is compos
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{overview.png}
-\caption{Overview of the D.I.A.G.R.A.M. architecture.}
+\caption{Overview of the DRAFT architecture.}
 \label{fig:pipeline}
 \end{figure}
 
@@ -170,7 +170,7 @@ mAR (Large)  & 0.9141 & Large objects \\
 \end{tabular}
 \end{table}
 
-The classifier initially suffered from class imbalance because the \textit{other} category dominated the training set. Weighted cross-entropy substantially improved performance, yielding 97\% validation accuracy. For extraction, the detector was evaluated at three training stages — zero-shot (COCO weights only), 10-epoch, and 100-epoch fine-tuning — with the 100-epoch model selected based on detection completeness (Fig.~\ref{fig:detection}). The final model achieved the results shown in Tables~\ref{tab:map} and~\ref{tab:mar}. Performance degrades on small objects (mAP 0.6444), reflecting the difficulty of detecting fine-grained diagram elements at low resolution. Average localization errors were 6.84 px (x) and 4.84 px (y).
+The classifier initially suffered from class imbalance because the \textit{other} category dominated the training set. Weighted cross-entropy substantially improved performance, yielding 97\% validation accuracy. For extraction, the detector was evaluated at three training stages — zero-shot (COCO weights only), 10-epoch, and 100-epoch fine-tuning — with the 100-epoch model selected based on detection completeness (Fig.~\ref{fig:detection}). The final model achieved the results shown in Tables~\ref{tab:map} and~\ref{tab:mar}. Performance degrades on small objects (mAP 0.6444), reflecting the difficulty of detecting fine-grained diagram elements at low resolution. Average localization errors were 6.84 px (x) and 4.84 px (y). The low mAR@1 value (0.3436) is expected: the single-detection-per-image cap is trivially insufficient for diagrams containing dozens of elements; the operationally relevant figures are mAR@10 (0.8877) and mAR@100 (0.9128).
 
 For OCR, several TrOCR variants were compared on handwritten diagram text. The \textit{base handwritten} model produced the best cosine and Euclidean distance scores, while the \textit{small handwritten} model yielded the best Hamming distance. In the current prototype, this comparison was used as a practical model-selection step rather than as a standalone research contribution; Table~\ref{tab:ocr} reports the comparison, and Figs.~\ref{fig:ocr_examples} and~\ref{fig:ocr_failures} show representative easy and difficult cases.
 
@@ -235,7 +235,7 @@ TrOCR base handwritten & 1.549 & \textbf{0.057} & \textbf{3003} \\
         \includegraphics[height=4.8cm]{chat4.png} \\
         (d) Our result & (e) GPT Mermaid & (f) GPT D2 \\
     \end{tabular}
-    \caption{Qualitative comparison between D.I.A.G.R.A.M. and zero-shot GPT-4o markup generation.}
+    \caption{Qualitative comparison between DRAFT and zero-shot GPT-4o markup generation.}
     \label{fig:gpt_compare}
 \end{figure}
 
@@ -250,7 +250,7 @@ TrOCR base handwritten & 1.549 & \textbf{0.057} & \textbf{3003} \\
     \label{fig:detection}
 \end{figure}
 
-Figure~\ref{fig:results} shows representative end-to-end examples for graph and flowchart inputs. Fig.~\ref{fig:gpt_compare} shows a qualitative comparison with zero-shot GPT-4o, prompted with: \textit{``The current image features a diagram. Analyze it and output the respective D2 and Mermaid script.''}. Three structural differences stand out. First, GPT-4o does not correctly preserve node shapes, whereas D.I.A.G.R.A.M.\ explicitly detects and encodes element categories. Second, GPT-4o fails to correctly recognize self-arrows. Third, in one case GPT-4o generated three separate nodes from what was a single node in the original diagram. These differences matter in the educational setting because editable correctness — not visual similarity — is the goal. D.I.A.G.R.A.M. is not without errors either: output~(d) in Fig.~\ref{fig:results} contains a spurious node in the upper-right corner, produced by the self-arrow NMS failure already described, illustrating that task-specific fine-tuning reduces but does not eliminate structural errors.
+Figure~\ref{fig:results} shows representative end-to-end examples for graph and flowchart inputs. Fig.~\ref{fig:gpt_compare} shows a qualitative comparison with zero-shot GPT-4o, prompted with: \textit{``The current image features a diagram. Analyze it and output the respective D2 and Mermaid script.''}. Three structural differences stand out. First, GPT-4o does not correctly preserve node shapes, whereas DRAFT\ explicitly detects and encodes element categories. Second, GPT-4o fails to correctly recognize self-arrows. Third, in one case GPT-4o generated three separate nodes from what was a single node in the original diagram. These differences matter in the educational setting because editable correctness — not visual similarity — is the goal. DRAFT is not without errors either: output~(d) in Fig.~\ref{fig:results} contains a spurious node in the upper-right corner, produced by the self-arrow NMS failure already described, illustrating that task-specific fine-tuning reduces but does not eliminate structural errors.
 
 Figure~\ref{fig:detection} highlights the role of task-specific fine-tuning in the extractor. The zero-shot detector identifies only part of the structure, whereas the fine-tuned model recovers more complete node and arrow information. This behavior is important in the educational setting because downstream usability depends on preserving the logical structure of the original sketch.
 
@@ -263,7 +263,7 @@ The present work does not include a classroom study or a quantitative evaluation
 The prototype is relevant for courses where students sketch flowcharts, state diagrams, or process structures during exercises — programming, automata, control, and software engineering courses being primary examples. A practical revision workflow has students submit a photographed sketch, inspect or correct the generated Mermaid or D2 output, and turn in the structured result. This reduces transcription effort while encouraging reflection on the formal diagram structure. A secondary use case is instructor-side archiving: structured representations make it easier to review and document diagram-based submissions at scale. A longer-term direction is semi-automatic formative feedback, for which the current system provides the necessary prerequisite: a machine-readable representation of handwritten student work.
 
 \section{Availability and Reproducibility}
-The implementation of D.I.A.G.R.A.M. is publicly available at \url{https://github.com/diagram-framework/diagram}. The repository contains the main modules of the pipeline, including diagram classification, object detection, OCR integration, relation extraction, markup generation, and the command-line interface used to run the system. It also provides installation instructions and example input diagrams; Table~\ref{tab:artifacts} lists the main publicly available artifacts.
+The implementation of DRAFT is publicly available at \url{https://github.com/diagram-framework/draft}. The repository contains the main modules of the pipeline, including diagram classification, object detection, OCR integration, relation extraction, markup generation, and the command-line interface used to run the system. It also provides installation instructions and example input diagrams; Table~\ref{tab:artifacts} lists the main publicly available artifacts.
 
 \begin{table}[htbp]
 \centering
@@ -291,7 +291,7 @@ The public release also lowers the barrier for follow-up educational experimenta
 The current CLI-based workflow is intentionally human-in-the-loop: a student submits a photographed sketch, receives a first-pass Mermaid or D2 rendering, and corrects errors before final submission. This is a better fit for early adoption than a black-box autograder, since occasional detection or OCR mistakes can be fixed directly in the editable output. The public release of pretrained weights makes local trials feasible without retraining. Future steps include a web interface, classroom-specific dataset collection from corrected outputs, and comparison of generated diagrams against reference structures for formative feedback.
 
 \section{Conclusion}
-D.I.A.G.R.A.M. demonstrates the feasibility of converting handwritten engineering diagrams into structured and editable digital representations through a hybrid pipeline combining learned and deterministic components. The current prototype supports a complete workflow from image input to Mermaid or D2 output, and the released code, weights, and examples make it possible to reproduce and extend the system.
+DRAFT demonstrates the feasibility of converting handwritten engineering diagrams into structured and editable digital representations through a hybrid pipeline combining learned and deterministic components. The current prototype supports a complete workflow from image input to Mermaid or D2 output, and the released code, weights, and examples make it possible to reproduce and extend the system.
 
 The work should be interpreted as a proof of concept rather than as evidence of pedagogical effectiveness. Its most realistic early role is assisted digitization under human supervision, allowing students or instructors to inspect and correct generated structures before reuse, submission, or feedback. Future classroom studies should evaluate not only recognition quality, but also revision effort, turnaround time, and the usefulness of structured outputs for feedback and documentation. On the technical side, immediate improvements include data augmentation and dataset expansion to address classifier fragility on underrepresented categories, parallelization of the extractor module (currently a sequential bottleneck), and containerization via Docker to simplify dependency management across deployment environments.
 
