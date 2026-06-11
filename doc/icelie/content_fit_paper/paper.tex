@@ -43,6 +43,8 @@
 In engineering education, handwritten diagrams are widely used to express algorithms, workflows, state machines, and system structures. These artifacts support reasoning during exercises and project work, but they are difficult to edit, archive, reuse, or integrate into digital learning material once they remain on paper or in static photographs. This paper presents D.I.A.G.R.A.M., a prototype AI-assisted system for converting handwritten engineering diagrams into structured and editable digital representations. The pipeline combines diagram classification, object detection, optical character recognition, and deterministic post-processing to generate markup-based outputs such as Mermaid and D2. The contribution of this work is not a new state-of-the-art recognition model, but a modular proof-of-concept tool for supporting documentation, revision, and future feedback workflows in engineering education. Component-level metrics and qualitative examples indicate that the proposed approach is technically feasible as a basis for classroom-oriented experimentation.
 \end{abstract}
 
+% Eviterei l'autogol di "non è un sota"
+
 \begin{IEEEkeywords}
 engineering education, handwritten diagram recognition, AI-assisted learning tools
 \end{IEEEkeywords}
@@ -53,6 +55,8 @@ Diagrams are central to engineering education. Students and instructors routinel
 Converting handwritten diagrams into editable digital formats can support multiple educational needs. Students can refine and document their work more easily, instructors can archive diagram-based submissions in structured form, and future tools can build on the extracted representation for semi-automatic feedback or assessment. However, this conversion requires several non-trivial steps, including diagram-type recognition, element detection, text digitization, and relation reconstruction.
 
 This paper presents D.I.A.G.R.A.M., a prototype AI-assisted tool for converting handwritten engineering diagrams into structured and editable digital representations. The contribution is not a new detection architecture, but the design and proof-of-concept implementation of a modular pipeline that combines learned and deterministic components to support diagram-based learning workflows.
+
+% Valutare un cambio nome
 
 More specifically, the paper contributes:
 \begin{itemize}
@@ -78,13 +82,19 @@ Figure~\ref{fig:pipeline} shows the overall architecture. The pipeline is compos
 
 The Classifier determines the category of the submitted handwritten diagram and selects the appropriate extraction pipeline. The Extractor applies object detection, OCR, and deterministic post-processing to build a unified internal representation based on elements, relations, and associated text. The Transducer converts this representation into markup languages such as Mermaid or D2, and the Compiler renders the corresponding digital diagram. In the intended educational scenario, the output becomes an editable artifact that can be revised, documented, and reused.
 
+% Un po' più di dettaglio sui moduli
+
 \section{Educational Use Scenario}
 In the intended workflow, a student or instructor uploads a photograph or scan of a handwritten engineering diagram produced during an exercise, laboratory activity, or project report. The system classifies the diagram type, extracts elements and relations, and generates an editable representation in Mermaid or D2. This representation can then be corrected manually, included in digital course material, submitted as structured documentation, or used as input for future feedback and assessment tools.
 
 This workflow is particularly relevant for diagram-based activities in programming, digital systems, automation, software engineering, and control-oriented courses, where students often express reasoning through flowcharts, state diagrams, or process structures.
 
+% Serve davvero questa sezione?
+
 \section{Prototype Implementation}
 The current prototype focuses on handwritten flowcharts and graph-like diagrams. For classification, input images are normalized through grayscale conversion, binarization, filtering, perspective correction, and padding, as summarized in Fig.~\ref{fig:preprocessing}. A compact CNN then predicts one of three classes: flowchart, graph, or other. This stage is intentionally lightweight because it acts as a routing mechanism rather than the main recognition contribution.
+
+% Anche questa sezione è molto povera, sembra più una supercazzola che una spiegazione tecnica
 
 \begin{figure}[htbp]
 \centering
@@ -94,6 +104,9 @@ The current prototype focuses on handwritten flowcharts and graph-like diagrams.
 \end{figure}
 
 For extraction, the prototype uses Faster R-CNN with a ResNet-50 FPN backbone \cite{rcnn,lin2017feature} to detect nodes, arrows, and text regions. OCR is performed with TrOCR \cite{microsofttrocr}. Deterministic post-processing associates text with nodes or relations, reconstructs source and target links, and attempts to recover incomplete arrow detections. The resulting internal representation is then translated into Mermaid or D2 markup and rendered as a digital diagram.
+
+% Mancano i dettagli sul finetuning e sui dataset
+% Mancano i dettagli sul modello usato per OCR (e.g. la size)
 
 The internal representation is organized around elements and relations. Elements include diagram nodes and attached text, while relations encode arrows, source and target assignments, and optional labels. This representation is intentionally diagram-oriented rather than pixel-oriented, because the educational objective is to produce editable structures that can be revised by students or reused by instructors. Fig.~\ref{fig:extractor} summarizes the main flowchart extraction stages.
 
@@ -243,6 +256,8 @@ One practical use case is a revision workflow in which students begin from a han
 Another use case is instructor-side organization. Diagram-based submissions are often difficult to archive and compare at scale when they exist only as scans or smartphone photos. A structured representation makes it easier to review common patterns, prepare annotated examples for later teaching, or build collections of representative student solutions.
 
 Finally, the prototype suggests a path toward semi-automatic formative assessment. The current paper does not claim that such assessment is already implemented or validated. However, it demonstrates the prerequisite step: producing a machine-readable representation from handwritten student work in a form that can support later feedback logic.
+
+% Le ultime due sezioni sono troppo lunghe e vaghe, non abbiamo messo dettagli e poi gli raccontiamo le favole
 
 \section{Availability and Reproducibility}
 The implementation of D.I.A.G.R.A.M. is publicly available at \url{https://github.com/nricciardi/diagram}. The repository contains the main modules of the pipeline, including diagram classification, object detection, OCR integration, relation extraction, markup generation, and the command-line interface used to run the system. It also provides installation instructions and example input diagrams; Table~\ref{tab:artifacts} lists the main publicly available artifacts.
